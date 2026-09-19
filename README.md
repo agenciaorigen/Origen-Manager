@@ -17,9 +17,9 @@ Ingresá con cualquier email y contraseña (6+ caracteres). Los datos de ejemplo
 1. Creá un proyecto en supabase.com.
 2. SQL Editor → pegá y ejecutá `supabase/schema.sql`.
 3. Authentication → Providers → Email: dejalo activo. Para uso personal, desactivá "Allow new users to sign up" después de crear tu cuenta.
-4. Copiá `.env.example` a `.env` y completá `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` (Project Settings → API).
+4. Copiá `.env.example` a `.env` y completá `ORIGEN_SUPABASE_URL` y `ORIGEN_SUPABASE_PUBLISHABLE` (la clave `sb_publishable_…`) (Project Settings → API).
 5. `npm run build` → publicá la carpeta `dist` (Vercel, Netlify o GitHub Pages; usa rutas con `#`, no requiere configuración extra).
-   En Vercel/Netlify cargá las dos variables en el panel del proyecto.
+   En Vercel/Netlify cargá las dos variables (tipo Secret alcanza) en el panel del proyecto.
 
 Los datos de ejemplo se pueden cargar desde **Perfil → Cargar datos de ejemplo**.
 

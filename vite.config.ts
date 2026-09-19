@@ -2,4 +2,8 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwind from '@tailwindcss/vite'
 
-export default defineConfig({ plugins: [react(), tailwind()], test: { environment: 'node' } })
+export default defineConfig({
+  plugins: [react(), tailwind()],
+  envPrefix: ['VITE_', 'ORIGEN_'],
+  test: { environment: 'node' },
+})
