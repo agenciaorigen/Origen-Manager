@@ -6,7 +6,7 @@ import { billingMonths, missingPayments } from '../lib/finance'
 import { auth } from '../services/auth'
 
 interface Actions {
-  add<T extends TableName>(t: T, ...rows: Tables[T][]): Promise<void>
+  add<T extends TableName>(t: T, ...rows: Tables[T][]): Promise<boolean>
   patch<T extends TableName>(t: T, id: string, p: Partial<Tables[T]>): Promise<void>
   del(t: TableName, ...ids: string[]): Promise<void>
   seed(): Promise<void>
@@ -40,7 +40,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     async add(t, ...rows) {
       setError('')
       setDb(d => d && ({ ...d, [t]: [...d[t], ...rows] }))
-      try { await store.insert(t, rows) } catch (e) { setError((e as Error).message); reload() }
+      try { await store.insert(t, rows); return true } catch (e) { setError((e as Error).message); reload(); return false }
     },
     async patch(t, id, p) {
       setError('')
