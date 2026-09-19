@@ -8,7 +8,7 @@ import { cx } from './ui'
 
 const NAV: [string, string, IconName][] = [
   ['/', 'Inicio', 'home'], ['/hoy', 'Hoy', 'today'], ['/clientes', 'Clientes', 'users'], ['/agenda', 'Agenda', 'calendar'],
-  ['/finanzas', 'Finanzas', 'wallet'], ['/contenido', 'Contenido', 'grid'], ['/workflows', 'Workflows', 'flow'],
+  ['/mensual', 'Mensual', 'check'], ['/finanzas', 'Finanzas', 'wallet'], ['/contenido', 'Contenido', 'grid'], ['/workflows', 'Workflows', 'flow'],
   ['/objetivos', 'Objetivos', 'target'], ['/perfil', 'Perfil', 'user'],
 ]
 const MOBILE: [string, string, IconName][] = [

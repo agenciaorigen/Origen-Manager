@@ -18,11 +18,17 @@ export function tasksFromWorkflow(db: Pick<DB, 'workflow_steps'>, workflowId: st
 }
 
 /** Plantillas iniciales (offsets en días desde el evento). */
+export const MONTHLY_NAME = 'Ciclo mensual de contenido'
+
 export const DEFAULT_WORKFLOWS = [
-  { name: 'Sesión de fotos', job_type: 'Sesión de fotos' as const, steps: [
-    ['Coordinar y confirmar con el cliente', -2, 20, 'media'], ['Descargar y seleccionar material', 1, 60, 'alta'],
-    ['Editar fotos', 1, 120, 'alta'], ['Preparar contenido y copies', 2, 60, 'media'],
-    ['Programar publicaciones', 3, 30, 'media'], ['Publicar', 4, 15, 'alta'], ['Revisar métricas', 7, 30, 'baja'],
+  // Un solo ciclo por cliente y por mes. Día 0 = fecha de la sesión.
+  { name: MONTHLY_NAME, job_type: 'Sesión de fotos' as const, steps: [
+    ['Coordinar fecha, lugar y objetivo con el cliente', -3, 20, 'media'], ['Confirmar sesión y preparar equipo', -1, 30, 'alta'],
+    ['Sesión de fotos y video', 0, 120, 'alta'], ['Descargar, respaldar y seleccionar el material', 1, 60, 'alta'],
+    ['Editar fotos y videos', 2, 180, 'alta'], ['Enviar al cliente para aprobación', 4, 15, 'alta'],
+    ['Redactar copies y hashtags', 5, 45, 'media'], ['Aplicar correcciones y programar publicaciones', 6, 60, 'media'],
+    ['Publicar', 7, 15, 'alta'], ['Responder comentarios y revisar primeras métricas', 14, 30, 'media'],
+    ['Armar reporte mensual con métricas', 21, 60, 'media'], ['Enviar reporte al cliente', 23, 15, 'media'],
   ] },
   { name: 'Reel', job_type: 'Reel' as const, steps: [
     ['Grabar material', 0, 90, 'alta'], ['Editar reel', 1, 120, 'alta'], ['Aprobación del cliente', 2, 15, 'media'], ['Publicar reel', 3, 15, 'alta'], ['Revisar métricas', 7, 30, 'baja'],

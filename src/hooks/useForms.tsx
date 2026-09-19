@@ -3,7 +3,7 @@ import { FormModal, type Field, type Values } from '../components/FormModal'
 import { useData } from './useData'
 import { JOB_TYPES, type AgendaEvent, type Client, type DB, type Note, type Payment, type Service, type Task, type Workflow, type WorkflowStep } from '../types'
 import { tasksFromWorkflow } from '../lib/workflow'
-import { addDays, today } from '../utils/date'
+import { addDays, diffDays, today } from '../utils/date'
 import { uid } from '../utils/format'
 
 const opts = (xs: readonly string[]) => xs.map(x => ({ value: x, label: x[0].toUpperCase() + x.slice(1) }))
@@ -93,12 +93,17 @@ function EntityForm({ kind, init = {}, onClose }: Open & { onClose(): void }) {
         submit: v => done(() => {
           const client = db.clients.find(c => c.id === v.client_id)
           const title = String(v.title || `${v.job_type}${client ? ' — ' + client.name : ''}`)
+          if (editing) {
+            // Al mover la fecha de la sesión, las tareas pendientes se corren los mismos días.
+            const delta = diffDays(String(v.date), String(init.date))
+            if (delta) db.tasks.filter(t => t.event_id === init.id && t.status === 'pendiente').forEach(t => patch('tasks', t.id, { date: addDays(t.date, delta) }))
+          }
           if (editing) return save('events', { job_type: v.job_type, client_id: orNull(v.client_id), date: v.date, time: v.time, title, description: v.description, status: v.status })
           const ev: AgendaEvent = { id: uid(), client_id: orNull(v.client_id) as string | null, workflow_id: orNull(v.workflow_id) as string | null, title, job_type: v.job_type as AgendaEvent['job_type'], date: String(v.date), time: String(v.time), description: String(v.description), status: 'pendiente' }
           // Secuencial: el evento debe existir en la base antes de insertar sus tareas (clave foránea).
           void (async () => {
-            await add('events', ev)
-            if (ev.workflow_id) { const ts = tasksFromWorkflow(db, ev.workflow_id, ev); if (ts.length) await add('tasks', ...ts) }
+            const ok = await add('events', ev) // si falla, no se crean tareas y se muestra el error real del evento
+            if (ok && ev.workflow_id) { const ts = tasksFromWorkflow(db, ev.workflow_id, ev); if (ts.length) await add('tasks', ...ts) }
           })()
         }),
         onDelete: rm('events'),

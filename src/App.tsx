@@ -15,6 +15,7 @@ import Workflows from './pages/Workflows'
 import Objetivos from './pages/Objetivos'
 import Perfil from './pages/Perfil'
 import Mas from './pages/Mas'
+import Mensual from './pages/Mensual'
 
 function Gate() {
   const { session, ready } = useAuth()
@@ -36,6 +37,7 @@ function Private() {
           <Route path="hoy" element={<Hoy />} />
           <Route path="clientes" element={<Clientes />} />
           <Route path="clientes/:id" element={<ClienteDetalle />} />
+          <Route path="mensual" element={<Mensual />} />
           <Route path="finanzas" element={<Finanzas />} />
           <Route path="agenda" element={<Agenda />} />
           <Route path="contenido" element={<Contenido />} />

@@ -3,6 +3,8 @@ import { diffDays, today } from '../utils/date'
 import { fmtMoney } from '../utils/format'
 import { isOverdue } from './finance'
 import { isLate } from './tasks'
+import { monthlyCycles, monthlyWorkflowId } from './monthly'
+import { monthKey } from '../utils/date'
 
 export interface Reminder { id: string; level: 'info' | 'warn' | 'alert'; text: string; link?: string }
 
@@ -15,6 +17,10 @@ export function buildReminders(db: DB, now: ISODate = today()): Reminder[] {
   const out: Reminder[] = []
   const late = db.tasks.filter(t => isLate(t, now)).length
   if (late) out.push({ id: 'late', level: 'alert', text: `Tenés ${late} ${late === 1 ? 'tarea atrasada' : 'tareas atrasadas'}.`, link: '/hoy' })
+  if (monthlyWorkflowId(db)) {
+    const sin = monthlyCycles(db, monthKey(now)).filter(c => c.state === 'sin-agendar').length
+    if (sin) out.push({ id: 'cycle', level: 'warn', text: `Falta agendar el contenido de ${sin} ${sin === 1 ? 'cliente' : 'clientes'} este mes.`, link: '/mensual' })
+  }
   for (const e of db.events.filter(e => e.status === 'pendiente' && diffDays(e.date, now) === 1))
     out.push({ id: `ev-${e.id}`, level: 'info', text: `Tenés ${e.job_type.toLowerCase()} con ${name(e.client_id)} mañana.`, link: '/agenda' })
   for (const t of db.tasks.filter(t => t.status === 'pendiente' && t.date === now))
