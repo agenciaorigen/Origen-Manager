@@ -38,10 +38,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const actions = useMemo<Actions>(() => ({
     async add(t, ...rows) {
+      setError('')
       setDb(d => d && ({ ...d, [t]: [...d[t], ...rows] }))
       try { await store.insert(t, rows) } catch (e) { setError((e as Error).message); reload() }
     },
     async patch(t, id, p) {
+      setError('')
       setDb(d => d && ({ ...d, [t]: (d[t] as { id: string }[]).map(r => (r.id === id ? { ...r, ...p } : r)) }))
       try { await store.update(t, id, p) } catch (e) { setError((e as Error).message); reload() }
     },

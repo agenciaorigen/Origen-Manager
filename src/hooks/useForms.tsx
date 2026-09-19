@@ -95,8 +95,11 @@ function EntityForm({ kind, init = {}, onClose }: Open & { onClose(): void }) {
           const title = String(v.title || `${v.job_type}${client ? ' — ' + client.name : ''}`)
           if (editing) return save('events', { job_type: v.job_type, client_id: orNull(v.client_id), date: v.date, time: v.time, title, description: v.description, status: v.status })
           const ev: AgendaEvent = { id: uid(), client_id: orNull(v.client_id) as string | null, workflow_id: orNull(v.workflow_id) as string | null, title, job_type: v.job_type as AgendaEvent['job_type'], date: String(v.date), time: String(v.time), description: String(v.description), status: 'pendiente' }
-          add('events', ev)
-          if (ev.workflow_id) { const ts = tasksFromWorkflow(db, ev.workflow_id, ev); if (ts.length) add('tasks', ...ts) }
+          // Secuencial: el evento debe existir en la base antes de insertar sus tareas (clave foránea).
+          void (async () => {
+            await add('events', ev)
+            if (ev.workflow_id) { const ts = tasksFromWorkflow(db, ev.workflow_id, ev); if (ts.length) await add('tasks', ...ts) }
+          })()
         }),
         onDelete: rm('events'),
       }
