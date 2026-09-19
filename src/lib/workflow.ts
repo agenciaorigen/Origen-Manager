@@ -21,10 +21,9 @@ export function tasksFromWorkflow(db: Pick<DB, 'workflow_steps'>, workflowId: st
 export const MONTHLY_NAME = 'Ciclo mensual de contenido'
 
 export const DEFAULT_WORKFLOWS = [
-  // Un solo ciclo por cliente y por mes. Día 0 = fecha de la sesión.
+  // Un solo ciclo por cliente y por mes. Al agendar la sesión (día 0) solo se generan los pasos posteriores.
   { name: MONTHLY_NAME, job_type: 'Sesión de fotos' as const, steps: [
-    ['Coordinar fecha, lugar y objetivo con el cliente', -3, 20, 'media'], ['Confirmar sesión y preparar equipo', -1, 30, 'alta'],
-    ['Sesión de fotos y video', 0, 120, 'alta'], ['Descargar, respaldar y seleccionar el material', 1, 60, 'alta'],
+    ['Descargar, respaldar y seleccionar el material', 1, 60, 'alta'],
     ['Editar fotos y videos', 2, 180, 'alta'], ['Enviar al cliente para aprobación', 4, 15, 'alta'],
     ['Redactar copies y hashtags', 5, 45, 'media'], ['Aplicar correcciones y programar publicaciones', 6, 60, 'media'],
     ['Publicar', 7, 15, 'alta'], ['Responder comentarios y revisar primeras métricas', 14, 30, 'media'],

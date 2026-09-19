@@ -13,7 +13,7 @@ describe('workflow', () => {
   const wf = seedWorkflows()
   it('genera tareas con fechas relativas al evento', () => {
     const ts = tasksFromWorkflow(wf, wf.workflows[0].id, ev)
-    expect(ts.length).toBe(11)
+    expect(ts.length).toBe(9)
     expect(ts.find(t => t.title === 'Editar fotos y videos')!.date).toBe('2026-09-25')
     expect(ts.find(t => t.title === 'Publicar')!.date).toBe('2026-09-30')
     expect(ts.every(t => t.client_id === 'c1' && t.event_id === 'e1')).toBe(true)
