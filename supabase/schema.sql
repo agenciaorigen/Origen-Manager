@@ -60,13 +60,18 @@ create table if not exists goals (
   id uuid primary key default gen_random_uuid(), user_id uuid not null default auth.uid() references auth.users on delete cascade,
   metric text not null check (metric in ('clients','revenue')), target numeric not null);
 
+-- Dispositivos que reciben notificaciones push (uno por navegador/celular).
+create table if not exists push_subscriptions (
+  id uuid primary key default gen_random_uuid(), user_id uuid not null default auth.uid() references auth.users on delete cascade,
+  endpoint text not null unique, p256dh text not null, auth text not null, created_at timestamptz default now());
+
 create index if not exists tasks_date on tasks (user_id, date) where status = 'pendiente';
 create index if not exists payments_due on payments (user_id, due_date);
 create index if not exists events_date on events (user_id, date);
 
 -- Seguridad: cada usuario sólo ve y modifica lo suyo.
 do $$ declare t text; begin
-  foreach t in array array['clients','workflows','workflow_steps','services','events','tasks','payments','contents','notes','goals'] loop
+  foreach t in array array['clients','workflows','workflow_steps','services','events','tasks','payments','contents','notes','goals','push_subscriptions'] loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists own on %I', t);
     execute format('create policy own on %I for all using (user_id = auth.uid()) with check (user_id = auth.uid())', t);

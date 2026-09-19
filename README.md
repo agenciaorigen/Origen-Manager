@@ -51,3 +51,16 @@ supabase/schema.sql   tablas, relaciones, índices y RLS
 ```bash
 npm test
 ```
+
+## Notificaciones en el celular (v0.2)
+
+La app es instalable (PWA) y recibe un resumen diario por notificación push aunque esté cerrada.
+
+1. Ejecutá de nuevo `supabase/schema.sql` (agrega la tabla `push_subscriptions`; es seguro repetirlo).
+2. Cargá `ORIGEN_VAPID_PUBLIC` en Vercel y hacé Redeploy.
+3. Supabase → Edge Functions → nueva función `send-reminders`, pegá `supabase/functions/send-reminders/index.ts`, desactivá "Verify JWT" y desplegá.
+4. Edge Functions → Secrets: `CRON_SECRET`, `VAPID_PUBLIC`, `VAPID_PRIVATE`, `VAPID_SUBJECT`.
+5. SQL Editor: ejecutá `supabase/notificaciones.sql` con tus valores.
+6. En el celular: instalá la app (Android: menú → Instalar app; iPhone: Compartir → Agregar a inicio), abrí **Perfil → Activar notificaciones**.
+
+Push web en iPhone sólo funciona con la app instalada en la pantalla de inicio (iOS 16.4+).
