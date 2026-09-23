@@ -1,6 +1,7 @@
 import { supabase } from '../services/supabase'
 
-const VAPID = import.meta.env.ORIGEN_VAPID_PUBLIC as string | undefined
+// Clave pública (no es secreta). La variable ORIGEN_VAPID_PUBLIC la pisa si existe.
+const VAPID = (import.meta.env.ORIGEN_VAPID_PUBLIC ?? 'BALtmU5l928Dnd-H2BTn2inqOtjzT-F0IhxA9sDfMXcyNYwUMCgMnCefwDQXFiKyg3IdFeVbVHyR6VBpMipsTlA') as string
 
 export const pushSupported = () =>
   !!supabase && !!VAPID && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
