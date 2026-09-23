@@ -18,7 +18,7 @@ export function Search({ onClose }: { onClose(): void }) {
   const cname = (id: string | null) => db.clients.find(c => c.id === id)?.name ?? ''
   const all: Hit[] = [
     ...db.clients.map(c => ({ id: c.id, group: 'Clientes', label: c.name, hint: c.company, to: `/clientes/${c.id}` })),
-    ...db.tasks.map(t => ({ id: t.id, group: 'Tareas', label: t.title, hint: `${cname(t.client_id)} · ${fmtShort(t.date)}`, to: '/hoy' })),
+    ...db.tasks.map(t => ({ id: t.id, group: 'Tareas', label: t.title, hint: `${cname(t.client_id)} · ${fmtShort(t.date)}`, to: '/' })),
     ...db.events.map(e => ({ id: e.id, group: 'Eventos', label: e.title, hint: fmtShort(e.date), to: '/agenda' })),
     ...db.payments.map(p => ({ id: p.id, group: 'Pagos', label: `${cname(p.client_id)} — ${fmtMoney(p.amount)}`, hint: `${p.concept} · vence ${fmtShort(p.due_date)}`, to: '/finanzas' })),
     ...db.workflows.map(w => ({ id: w.id, group: 'Workflows', label: w.name, to: '/workflows' })),

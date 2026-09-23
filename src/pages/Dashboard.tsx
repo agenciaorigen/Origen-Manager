@@ -39,7 +39,7 @@ export default function Dashboard() {
 
         <Section title="Recordatorios" className="max-lg:order-last p-0 [&>div:first-child]:px-5 [&>div:first-child]:pt-5"><div className="max-h-72 overflow-y-auto"><RemindersList /></div></Section>
 
-        <Section title="Tareas de hoy" className="lg:col-span-2" action={<Link to="/hoy" className="text-xs text-accent hover:underline">Ver todas</Link>}>
+        <Section title="Tareas de hoy" className="lg:col-span-2" action={<Link to="/" className="text-xs text-accent hover:underline">Ver todas</Link>}>
           {focus.length ? <ul className="divide-y divide-line">{focus.slice(0, 8).map(t => <TaskRow key={t.id} task={t} />)}</ul> : <Empty>Nada pendiente para hoy.</Empty>}
         </Section>
 

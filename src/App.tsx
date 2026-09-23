@@ -33,8 +33,9 @@ function Private() {
       {error && <p role="alert" className="bg-bad-soft px-4 py-2 text-center text-sm text-bad">{error}</p>}
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="hoy" element={<Hoy />} />
+          <Route index element={<Hoy />} />
+          <Route path="hoy" element={<Navigate to="/" replace />} />
+          <Route path="resumen" element={<Dashboard />} />
           <Route path="clientes" element={<Clientes />} />
           <Route path="clientes/:id" element={<ClienteDetalle />} />
           <Route path="mensual" element={<Mensual />} />

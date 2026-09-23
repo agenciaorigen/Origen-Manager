@@ -18,6 +18,7 @@ export interface Client {
   instagram: string; address: string; notes: string; status: ClientStatus
   sessions_month: number; posts_month: number; reels_month: number
   stories_month: number; other_deliverables: string
+  session_week?: number | null; session_weekday?: number | null; session_time?: string | null // preferencia de sesión mensual
 }
 export interface Service {
   id: ID; client_id: ID; name: string; price: number; frequency: Frequency

@@ -15,6 +15,7 @@ type Kind = 'client' | 'service' | 'task' | 'event' | 'payment' | 'note' | 'work
 interface Open { kind: Kind; init?: Record<string, unknown> }
 interface Forms { open(kind: Kind, init?: Record<string, unknown>): void }
 const Ctx = createContext<Forms>(null as never)
+const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 export const useForms = () => useContext(Ctx)
 
 export function FormsProvider({ children }: { children: ReactNode }) {
@@ -43,10 +44,13 @@ function EntityForm({ kind, init = {}, onClose }: Open & { onClose(): void }) {
         { name: 'address', label: 'Dirección', span: 2 },
         { name: 'sessions_month', label: 'Sesiones / mes', type: 'number', min: 0 }, { name: 'posts_month', label: 'Publicaciones / mes', type: 'number', min: 0 },
         { name: 'reels_month', label: 'Reels / mes', type: 'number', min: 0 }, { name: 'stories_month', label: 'Historias / mes', type: 'number', min: 0 },
-        { name: 'other_deliverables', label: 'Otros entregables', span: 2 }, { name: 'notes', label: 'Notas', type: 'textarea' },
+        { name: 'other_deliverables', label: 'Otros entregables', span: 2 },
+        { name: 'session_week', label: 'Sesión: semana del mes', type: 'select', options: [{ value: '', label: 'Sin preferencia' }, ...[1, 2, 3, 4].map(n => ({ value: String(n), label: `${n}ª semana` }))] },
+        { name: 'session_weekday', label: 'Sesión: día', type: 'select', options: [{ value: '', label: 'Sin preferencia' }, ...DAYS.map((d, i) => ({ value: String(i + 1), label: d }))] },
+        { name: 'session_time', label: 'Sesión: hora', type: 'time' }, { name: 'notes', label: 'Notas', type: 'textarea' },
       ],
-      initial: { name: '', company: '', phone: '', email: '', instagram: '', address: '', notes: '', status: 'activo', sessions_month: 0, posts_month: 0, reels_month: 0, stories_month: 0, other_deliverables: '', ...init } as Values,
-      submit: v => done(() => save('clients', v)), onDelete: rm('clients'),
+      initial: { name: '', company: '', phone: '', email: '', instagram: '', address: '', notes: '', status: 'activo', sessions_month: 0, posts_month: 0, reels_month: 0, stories_month: 0, other_deliverables: '', ...init, session_week: init.session_week ?? '', session_weekday: init.session_weekday ?? '', session_time: init.session_time ?? '' } as unknown as Values,
+      submit: v => done(() => save('clients', { ...v, session_week: orNull(v.session_week) && Number(v.session_week), session_weekday: orNull(v.session_weekday) && Number(v.session_weekday) })), onDelete: rm('clients'),
     }),
     service: () => ({
       title: editing ? 'Editar servicio' : 'Nuevo servicio',

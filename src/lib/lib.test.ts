@@ -57,3 +57,18 @@ describe('tareas y recordatorios', () => {
     expect((r as { jobType: string }).jobType).toBe('Sesión de fotos')
   })
 })
+
+import { nthWeekday, proposeAgenda } from './monthly'
+describe('agenda mensual', () => {
+  it('calcula el n-ésimo día de semana', () => {
+    expect(nthWeekday('2026-10', 2, 2)).toBe('2026-10-13') // 2º martes
+    expect(nthWeekday('2026-10', 1, 4)).toBe('2026-10-01') // 1º jueves
+  })
+  it('propone días libres sin domingos ni choques', () => {
+    const base = { company: '', phone: '', email: '', instagram: '', address: '', notes: '', status: 'activo' as const, sessions_month: 1, posts_month: 0, reels_month: 0, stories_month: 0, other_deliverables: '' }
+    const db = { clients: [{ ...base, id: 'a', name: 'A', session_week: 2, session_weekday: 2, session_time: '09:00' }, { ...base, id: 'b', name: 'B' }, { ...base, id: 'c', name: 'C' }],
+      workflows: [{ id: 'w', name: 'Ciclo mensual de contenido', job_type: 'Sesión de fotos' }], events: [], tasks: [] } as never
+    const p = proposeAgenda(db, '2026-10', '2026-10-02') // viernes
+    expect(p.map(r => [r.client.id, r.date, r.time])).toEqual([['a', '2026-10-13', '09:00'], ['b', '2026-10-03', '10:00'], ['c', '2026-10-05', '10:00']])
+  })
+})

@@ -7,13 +7,12 @@ import { useForms } from '../hooks/useForms'
 import { cx } from './ui'
 
 const NAV: [string, string, IconName][] = [
-  ['/', 'Inicio', 'home'], ['/hoy', 'Hoy', 'today'], ['/clientes', 'Clientes', 'users'], ['/agenda', 'Agenda', 'calendar'],
-  ['/mensual', 'Mensual', 'check'], ['/finanzas', 'Finanzas', 'wallet'], ['/contenido', 'Contenido', 'grid'], ['/workflows', 'Workflows', 'flow'],
+  ['/', 'Hoy', 'today'], ['/clientes', 'Clientes', 'users'], ['/mensual', 'Mensual', 'check'], ['/agenda', 'Agenda', 'calendar'],
+  ['/finanzas', 'Finanzas', 'wallet'], ['/resumen', 'Resumen', 'home'], ['/contenido', 'Contenido', 'grid'], ['/workflows', 'Workflows', 'flow'],
   ['/objetivos', 'Objetivos', 'target'], ['/perfil', 'Perfil', 'user'],
 ]
 const MOBILE: [string, string, IconName][] = [
-  ['/', 'Inicio', 'home'], ['/hoy', 'Hoy', 'today'], ['/clientes', 'Clientes', 'users'], ['/agenda', 'Agenda', 'calendar'],
-  ['/finanzas', 'Finanzas', 'wallet'], ['/mas', 'Más', 'more'],
+  ['/', 'Hoy', 'today'], ['/clientes', 'Clientes', 'users'], ['/mensual', 'Mensual', 'check'], ['/agenda', 'Agenda', 'calendar'], ['/mas', 'Más', 'more'],
 ]
 
 export function Layout() {

@@ -12,6 +12,7 @@ create table if not exists clients (
   name text not null, company text default '', phone text default '', email text default '', instagram text default '', address text default '', notes text default '',
   status client_status not null default 'activo',
   sessions_month int default 0, posts_month int default 0, reels_month int default 0, stories_month int default 0, other_deliverables text default '',
+  session_week int check (session_week between 1 and 4), session_weekday int check (session_weekday between 1 and 6), session_time text default '',
   created_at timestamptz default now());
 
 create table if not exists workflows (

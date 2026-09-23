@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Icon, type IconName } from '../components/Icon'
 import { Card, PageHeader } from '../components/ui'
 
-const ITEMS: [string, string, IconName][] = [['/mensual', 'Contenido del mes', 'check'], ['/contenido', 'Calendario de contenido', 'grid'], ['/workflows', 'Workflows', 'flow'], ['/objetivos', 'Objetivos', 'target'], ['/perfil', 'Perfil', 'user']]
+const ITEMS: [string, string, IconName][] = [['/finanzas', 'Finanzas', 'wallet'], ['/resumen', 'Resumen del negocio', 'home'], ['/contenido', 'Calendario de contenido', 'grid'], ['/workflows', 'Workflows', 'flow'], ['/objetivos', 'Objetivos', 'target'], ['/perfil', 'Perfil', 'user']]
 
 export default function Mas() {
   return (
